@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>前端Excel下载 | 穆飘</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="穆飘" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/highlight/atom-one-dark.min.css"><script type="text/javascript" src="/plugins/highlight/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();
+</script><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">穆飘</a></h1></div><p class="m-desc">别想太多，学就完事了！！</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">前端Excel下载</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2021/06/03/%E5%89%8D%E7%AB%AFExcel%E4%B8%8B%E8%BD%BD/">2021-06-03</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/vue/">vue</a>&nbsp;&bull;&nbsp;<a href="/categories/vue/%E6%8B%93%E5%B1%95/">拓展</a></span></div></div><div class="p-content"><p><span style="color:red;font-size: 20px">本文借鉴</span> <a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903880413675527">纯前端用XLSX库导出excel，可含多个sheet (juejin.cn)</a></p>
+<h2 id="导出逻辑"><a href="#导出逻辑" class="headerlink" title="导出逻辑"></a>导出逻辑</h2><ul>
+<li><p>excel整个表格专业名词是<span style="color:yellow"> workbook</span>，里面每张表格是 <span style="color:yellow">sheet</span></p>
+</li>
+<li><p>页面引入 xlsx 的库 ，<a target="_blank" rel="noopener" href="https://unpkg.com/xlsx/dist/xlsx.core.min.js">https://unpkg.com/xlsx/dist/xlsx.core.min.js</a></p>
+</li>
+<li><p>vue中引入xlsx的库</p>
+<pre><code>1、npm install xlsx 
+2、import XLSX from &#39;xlsx&#39;
+</code></pre>
+</li>
+<li><p>把数据生成<span style="color:yellow">sheet</span></p>
+<pre><code>var sheet = XLSX.utils.json_to_sheet(jsonData)
+/* json_to_sheet：将由对象组成的数组转换成sheet
+   aoa_to_sheet：将由二维数组转换成sheet
+   table_to_sheet：将table的dom直接转成sheet
+*/
+</code></pre>
+</li>
+<li><p>创建虚拟的 <span style="color:yellow">workbook</span></p>
+<pre><code>const wb = XLSX.utils.book_new()
+</code></pre>
+</li>
+<li><p>把<span style="color:yellow">sheet</span>添加到<span style="color:yellow">workbook</span>里</p>
+<pre><code>XLSX.utils.book_append_sheet(wb, sheet, &quot;这里是sheetName&quot;);
+</code></pre>
+</li>
+<li><p>把 <span style="color:yellow">workbook</span>转成<span style="color:yellow">blob</span></p>
+<pre><code>const blob = workbook2blob(wb);//看下面的js代码
+</code></pre>
+</li>
+<li><p>利用a标签和createObjectURl实现下载功能</p>
+<pre><code>openDownloadDialog(blob,&#39;excel的标题.xlsx&#39;);
+</code></pre>
+</li>
+</ul>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code class="js">/**
+ * 生成表格
+ */
+import XLSX from &#39;xlsx&#39;;
+
+// 将workbook转换成blob对象
+function workbook2blob(data) &#123;
+  // 生成excel的配置项
+  const wopts = &#123;
+    // 要生成的文件类型
+    bookType: &#39;xlsx&#39;,
+    // 是否生成Shared String Table，
+    // 官方解释时，如果开启生成速度会降低，但在低版本IOS设备上有更好的兼容性
+    bookSST: false,
+    type: &#39;binary&#39;
+  &#125;
+  const wbout = XLSX.write(data, wopts);
+  // 将字符串转 ArrayBuffer
+  function s2ab(s) &#123;
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) &amp; 0xff;
+    return buf;
+  &#125;
+  const blob = new Blob([s2ab(wbout)], &#123;
+    type: &#39;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;&#39;
+  &#125;);
+  return blob;
+&#125;
+
+ // 将blob对象创建bloburl，然后用a标签实现弹出下载框
+ function openDownloadDialog(blob, fileName) &#123;
+  if (typeof blob === &#39;object&#39; &amp;&amp; blob instanceof Blob) &#123;
+    blob = URL.createObjectURL(blob); // 创建blob地址
+  &#125;
+  const aLink = document.createElement(&#39;a&#39;);
+  aLink.href = blob;
+  // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，有时候 file:///模式下不会生效
+  aLink.download = fileName || &#39;&#39;;
+  let event;
+  if (window.MouseEvent) &#123;
+    event = new MouseEvent(&#39;click&#39;);
+  &#125; else &#123; //   移动端
+    event = document.createEvent(&#39;MouseEvents&#39;);
+    event.initMouseEvent(&#39;click&#39;, true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  &#125;
+  aLink.dispatchEvent(event);
+&#125;
+
+
+export default&#123;
+  workbook2blob,
+  openDownloadDialog
+&#125;
+</code></pre>
+<pre><code class="js"> /**
+  * 转换下载ip数据
+  */
+async generateAndDownload() &#123;
+  try&#123;
+    const info = await this.getIpInfoAll();
+        const data = info.data.response.data;
+        if(data.length &gt; 0) &#123;
+        const sheetData = [];
+        for(let i = 0, len = data.length; i &lt; len; i++) &#123;
+           for(let j = 0, len = this.Category.length; j &lt; len; j++) &#123;
+            if(data[i].EquipmentCategory === this.Category[j].value) &#123;
+              data[i].EquipmentCategory = this.Category[j].label;
+              break;
+            &#125;
+          &#125;
+          const obj = &#123;
+             名称: data[i].EquipmentName,
+             IP地址: data[i].IPaddr,
+             Mac地址: data[i].MacAddr,
+             类型: data[i].EquipmentCategory,
+             备注: data[i].Note
+           &#125;
+           sheetData.push(obj);
+         &#125;
+         const sheet = XLSX.utils.json_to_sheet(sheetData);
+         /* create a new blank workbook */
+         const wb = XLSX.utils.book_new();
+         XLSX.utils.book_append_sheet(wb, sheet, &#39;IP信息&#39;);
+      const workbookBlob = generate.workbook2blob(wb);
+         generate.openDownloadDialog(workbookBlob, &#39;IP信息&#39;);
+    &#125;catch(err)&#123;
+      this.$message.error(&#39;下载出错！&#39;);
+    &#125;  
+  &#125;    
+&#125;
+</code></pre>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">dpp</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2021/06/03/%E5%89%8D%E7%AB%AFExcel%E4%B8%8B%E8%BD%BD/">https://DongPangP.github.io/2021/06/03/前端Excel下载/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://DongPangP.github.io">dpp的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tags"></i><a href="/tags/vue/">vue</a><a href="/tags/xlsx%E5%BA%93/">xlsx库</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E9%80%BB%E8%BE%91"><span class="toc-number">1.</span> <span class="toc-text">导出逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a></li></ol></nav></aside></div><section class="p-ext"></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">穆飘</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>
