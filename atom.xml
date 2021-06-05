@@ -6,7 +6,7 @@
   <link href="https://dongpangp.github.io/atom.xml" rel="self"/>
   
   <link href="https://dongpangp.github.io/"/>
-  <updated>2021-06-04T08:44:39.711Z</updated>
+  <updated>2021-06-05T06:08:48.074Z</updated>
   <id>https://dongpangp.github.io/</id>
   
   <author>
@@ -17,11 +17,96 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>dom基础(节点Node类型)</title>
-    <link href="https://dongpangp.github.io/2021/06/04/dom%E5%9F%BA%E7%A1%80(%E8%8A%82%E7%82%B9Node%E7%B1%BB%E5%9E%8B)/"/>
-    <id>https://dongpangp.github.io/2021/06/04/dom%E5%9F%BA%E7%A1%80(%E8%8A%82%E7%82%B9Node%E7%B1%BB%E5%9E%8B)/</id>
+    <title>dom基础_Document类型</title>
+    <link href="https://dongpangp.github.io/2021/06/05/dom%E5%9F%BA%E7%A1%80_Document%E7%B1%BB%E5%9E%8B/"/>
+    <id>https://dongpangp.github.io/2021/06/05/dom%E5%9F%BA%E7%A1%80_Document%E7%B1%BB%E5%9E%8B/</id>
+    <published>2021-06-05T04:10:20.000Z</published>
+    <updated>2021-06-05T06:08:48.074Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ol><li>Document 类型是 JavaScript 中表示文档节点的类型。</li><li>在浏览器中，文档对象 document 是HTMLDocument 的实例 （HTMLDocument 继承 Document），表示整个HTML页面</li><li>document 是 window 对象的属性。</li></ol><p>特征：</p><ul><li>nodeType 等于 9；</li><li>nodeName 值为 ‘#document’ ；</li><li>nodeValue 值为 null；</li><li>parentNode 值为 null；</li><li>ownerDocument 值为 null；</li><li>子节点可以为DocumentType(最多一个)、Element(最多一个)、ProcessingInstruction 或 Comment 类型</li></ul><p>Document 类型可以表示 HTML 页面或其他 XML 文档，但最常用的还是通过HTMLDocument的实例取得 document对象。</p><p>document对象可以获取关于页面的信息以及操作其外观和底层结构。</p><h2 id="文档子节点"><a href="#文档子节点" class="headerlink" title="文档子节点"></a>文档子节点</h2><h3 id="documentElement"><a href="#documentElement" class="headerlink" title="documentElement"></a>documentElement</h3><p>documentElement 属性，始终指向HTML页面的 html 元素。虽然 document.childNodes 中始终有 html 元素，但使用 documentElement 属性可以更快更直接的访问该元素。</p><pre><code class="html">&lt;html&gt;  &lt;body&gt;    &lt;/body&gt;&lt;/html&gt;</code></pre><p>documentElement、firstChild 和 childNodes[0]</p><pre><code class="js">let html = document.documentElement; //取得对&lt;html&gt;的引用alert(html === document.childNodes[0]);  //truealert(html === document.firstChild);  //true</code></pre><h3 id="body"><a href="#body" class="headerlink" title="body"></a>body</h3><p>作为HTMLDocument 的实例，document 对象还有一个body 属性，直接指向 body 元素。</p><pre><code>let body = document.body;</code></pre><p>所有主流浏览器都支持  document.documentElement 和 document.body</p><h3 id="doctype"><a href="#doctype" class="headerlink" title="doctype"></a>doctype</h3><p>Document 类型另一种可能的子节点是 DocumentType。</p><pre><code>&lt;!doctype&gt;标签是文档中独立的部分，其信息可以通过 doctype 属性来访问let doctype = document.doctype; //取得对&lt;!doctype&gt;的引用</code></pre><h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>html 元素外的注释也是文档的子节点，它们的类型是Comment。但是浏览器不同实现不同，这些注释不一定被识别，或者表现不一致。</p><p>这个页面有3个子节点：注释、html元素、注释，但是实际上不同浏览器可能会不一样</p><pre><code class="html">&lt;!-- 第一条注释 --&gt;&lt;html&gt;  &lt;body&gt;      &lt;/body&gt;&lt;/html&gt;&lt;!-- 第二条注释 --&gt;</code></pre><p>另外，一般来说 appendChild()、removeChild()和 replaceChild() 方法不会用在 document 对象上。因为文档类型（如果存在）是只读的，而且只能有一个Element类型的子节点</p><h2 id="文档信息"><a href="#文档信息" class="headerlink" title="文档信息"></a>文档信息</h2><h3 id="title"><a href="#title" class="headerlink" title="title"></a>title</h3><ol><li>包含 title 元素中的文本，通常显示在浏览器窗口或标签页的标题栏。</li><li>通过这个属性可以读写页面的标题，修改后的标题也会反映在浏览器标题栏上。</li><li>不过，修改title属性并不会改变 title 元素</li></ol><pre><code>// 读取文档标题let originalTitle = document.title;// 修改文档标题document.title = &quot;New page title&quot;;</code></pre><h3 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h3><p>URL包含当前页面完整的URL（地址栏中的URL）</p><pre><code>let url = document.URL;</code></pre><h3 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h3><p>domian 包含当前的域名</p><pre><code>let domain = document.domain;</code></pre><p>domain 可以设置，但是只能设置 URL 中包含的值。</p><pre><code>// 页面来自 p2p.wrox.comdocument.domain = &quot;wrox.com&quot;; //成功document.domain = &quot;aaa.com&quot;; //失败</code></pre><p>当页面中包含来自某个不同子域的窗格（frame）或内嵌窗格（iframe）时，设置document.domain是有用的。因为跨源通信存在安全隐患，所以不同子域的页面间无法通过JavaScript通信。此时只要将每个页面上的document.domain设置为相同的值，这些页面就可以访问对方的JavaScript对象了。</p><p>浏览器对domain属性设置只能放松不能收紧</p><h3 id="referrer"><a href="#referrer" class="headerlink" title="referrer"></a>referrer</h3><p>包含链接到当前页面的那个页面的URL，如果当前页面没有来源，则referrer属性包含空字符串</p><pre><code>let refferrer = document.referrer</code></pre><h2 id="定位元素"><a href="#定位元素" class="headerlink" title="定位元素"></a>定位元素</h2><h3 id="getElementById"><a href="#getElementById" class="headerlink" title="getElementById()"></a>getElementById()</h3><ol><li>接收一个参数，即要返回元素的ID，如果找到了则返回这个元素，如果没找到则返回null。</li><li>参数必须和元素在页面中的id属性值完全匹配，包括大小写。</li><li>如果页面存在多个具有相同ID的元素，则方法只返回文档中出现的第一个元素</li></ol><pre><code>&lt;div id=&quot;myDiv&quot;&gt;hello&lt;/div&gt;let div = document.getElementById(&quot;myDiv&quot;) // 取得对这个&lt;div&gt;元素的引用</code></pre><h3 id="getElementsByTagName"><a href="#getElementsByTagName" class="headerlink" title="getElementsByTagName()"></a>getElementsByTagName()</h3><ol><li>接收一个参数，要获取元素的标签名，返回包含零个或多个元素的 NodeList</li><li>在HTML文档中，这个方法返回一个HTMLCollection对象。考虑到两者都是“实时”列表，HTMLCollection 与 NodeLIst 是很相似的。</li><li>可以通过传入 * 获取文档的所有元素</li></ol><pre><code>let images = document.getElementsByTagName(&quot;img&quot;);</code></pre><p>这里把返回的 HTMLCollection 对象保存在了变量 images 中，与NodeList一样，也可以使用 中括号 或 item() 方法从HTMLCollection 取得特定的元素。</p><pre><code>alert(images.length);alert(images[0].src);alert(images.item(0).src);</code></pre><p>HTMLCollection 对象还有一个额外的方法 namedItem()，可通过标签的 name 属性取得某一项的引用。</p><pre><code>&lt;img src=&quot;my.jpg&quot; name=&quot;myImage&quot;&gt;</code></pre><pre><code>let images = document.getElementsByTagName(&quot;img&quot;);let myImage1 = images.namedItem(&quot;myImage&quot;);let myImage2 = images[&quot;myImage&quot;];</code></pre><h3 id="getElementByName"><a href="#getElementByName" class="headerlink" title="getElementByName()"></a>getElementByName()</h3><p>这个方法会返回具有给定 name 属性的所有元素，最常用于单选按钮</p><h2 id="特殊集合"><a href="#特殊集合" class="headerlink" title="特殊集合"></a>特殊集合</h2><ul><li>document.anchors：包含文档中所有带name属性的 a 元素</li><li>document.forms：包含文档中所有 from 元素</li><li>document.images：包含文档中中所有 img 元素</li><li>document.links：包含文档中所有带href属性的 a 元素</li></ul><h2 id="文档写入"><a href="#文档写入" class="headerlink" title="文档写入"></a>文档写入</h2><ul><li>write()</li><li>writeIn()</li><li>open()</li><li>close()</li></ul><p>该内容可参考以下文章：</p><p><a href="https://blog.csdn.net/m0_37589327/article/details/78992784">https://blog.csdn.net/m0_37589327/article/details/78992784</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;概念&quot;&gt;&lt;a href=&quot;#概念&quot; class=&quot;headerlink&quot; title=&quot;概念&quot;&gt;&lt;/a&gt;概念&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;Document 类型是 JavaScript 中表示文档节点的类型。&lt;/li&gt;
+&lt;li&gt;在浏览器中，文档对象 document</summary>
+      
+    
+    
+    
+    <category term="JavaScript高级程序设计笔记" scheme="https://dongpangp.github.io/categories/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Dom" scheme="https://dongpangp.github.io/categories/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%AC%94%E8%AE%B0/Dom/"/>
+    
+    
+    <category term="JavaScript" scheme="https://dongpangp.github.io/tags/JavaScript/"/>
+    
+    <category term="Dom" scheme="https://dongpangp.github.io/tags/Dom/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>伪数组</title>
+    <link href="https://dongpangp.github.io/2021/06/05/%E4%BC%AA%E6%95%B0%E7%BB%84/"/>
+    <id>https://dongpangp.github.io/2021/06/05/%E4%BC%AA%E6%95%B0%E7%BB%84/</id>
+    <published>2021-06-05T03:02:31.000Z</published>
+    <updated>2021-06-05T03:15:57.082Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="伪数组的特点"><a href="#伪数组的特点" class="headerlink" title="伪数组的特点"></a>伪数组的特点</h2><ul><li>Object 对象</li><li>length 属性</li><li>数值下标属性</li><li>没有数组特别的方法：forEach() ，push()，pop()，splice()</li></ul><pre><code class="js">const obj = &#123;      0: tom,      1: jerry,      2: bob      length: 3&#125;</code></pre><h2 id="如何判断一个对象是否属于伪数组"><a href="#如何判断一个对象是否属于伪数组" class="headerlink" title="如何判断一个对象是否属于伪数组"></a>如何判断一个对象是否属于伪数组</h2><h3 id="Array-isArray"><a href="#Array-isArray" class="headerlink" title="Array.isArray"></a>Array.isArray</h3><pre><code>console.log(Array.isArray(obj)) // false;</code></pre><h3 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h3><pre><code>console.log(obj instanceof Array) //false</code></pre><h2 id="常见的伪数组"><a href="#常见的伪数组" class="headerlink" title="常见的伪数组"></a>常见的伪数组</h2><ol><li>jQuery 对象（比如 $(“div”)）</li><li>函数内部的arguments</li><li>DOM中 NodeList对象</li></ol><h2 id="将伪数组转换成数组"><a href="#将伪数组转换成数组" class="headerlink" title="将伪数组转换成数组"></a>将伪数组转换成数组</h2><p>可以使用Array.prototype.slice.call() 将数组转化为真正的Array对象</p><pre><code>const arr = Array.prototype.slice.call(obj);</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;伪数组的特点&quot;&gt;&lt;a href=&quot;#伪数组的特点&quot; class=&quot;headerlink&quot; title=&quot;伪数组的特点&quot;&gt;&lt;/a&gt;伪数组的特点&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Object 对象&lt;/li&gt;
+&lt;li&gt;length 属性&lt;/li&gt;
+&lt;li&gt;数值下标属性&lt;/li</summary>
+      
+    
+    
+    
+    <category term="JavaScript高级程序设计笔记" scheme="https://dongpangp.github.io/categories/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="对象" scheme="https://dongpangp.github.io/categories/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%AC%94%E8%AE%B0/%E5%AF%B9%E8%B1%A1/"/>
+    
+    
+    <category term="JavaScript" scheme="https://dongpangp.github.io/tags/JavaScript/"/>
+    
+    <category term="Object" scheme="https://dongpangp.github.io/tags/Object/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jQuery</title>
+    <link href="https://dongpangp.github.io/2021/06/05/jQuery/"/>
+    <id>https://dongpangp.github.io/2021/06/05/jQuery/</id>
+    <published>2021-06-05T01:38:35.000Z</published>
+    <updated>2021-06-05T04:09:16.038Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="如何使用jQuery？"><a href="#如何使用jQuery？" class="headerlink" title="如何使用jQuery？"></a>如何使用jQuery？</h2><h3 id="下载jQuery库"><a href="#下载jQuery库" class="headerlink" title="下载jQuery库"></a>下载jQuery库</h3><p>下载地址：<a href="http://code.jquery.com/">http://code.jquery.com/</a></p><h3 id="引入下载的jQuery库"><a href="#引入下载的jQuery库" class="headerlink" title="引入下载的jQuery库"></a>引入下载的jQuery库</h3><pre><code>&lt;script src=&quot;code/js/jquery-1.12.4.js&quot;&gt;&lt;/script&gt;</code></pre><h3 id="编写jQuery代码"><a href="#编写jQuery代码" class="headerlink" title="编写jQuery代码"></a>编写jQuery代码</h3><pre><code>// 原生JS的固定写法window.onload = function(ev)&#123;&#125;// jQuery的固定写法$(document).ready(function()&#123;   ...&#125;);</code></pre><h3 id="jQuery版本区别"><a href="#jQuery版本区别" class="headerlink" title="jQuery版本区别"></a>jQuery版本区别</h3><p>1.x ：兼容ie678，但相对其他版本文件较大，官方只做BUG维护，功能不再新增，最终版本：1.12.4（2016年5月20日）</p><p>2.x：不兼容ie678，相对1.x文件较小，官方只做BUG维护，功能不再新增，最终版本：2.2.4（2016年5月20日）</p><p>3.x：不兼容ie678，只支持最新的浏览器，很多老的jQuery插件不支持这个版本，相对1.x文件较小，提供不包含ajax/动画API版本</p><h2 id="jQuery入口函数"><a href="#jQuery入口函数" class="headerlink" title="jQuery入口函数"></a>jQuery入口函数</h2><h3 id="jQuery与原生js加载模式的区别"><a href="#jQuery与原生js加载模式的区别" class="headerlink" title="jQuery与原生js加载模式的区别"></a>jQuery与原生js加载模式的区别</h3><h4 id="加载内容不同"><a href="#加载内容不同" class="headerlink" title="加载内容不同"></a>加载内容不同</h4><p>​    原生js会在dom原生与图片内容都加载后执行；</p><p>​    jQuery会在dom元素加载后执行，不会等待图片加载。</p><h4 id="多个入口文件时执行方式不同"><a href="#多个入口文件时执行方式不同" class="headerlink" title="多个入口文件时执行方式不同"></a>多个入口文件时执行方式不同</h4><p>​    原生js只执行最后一个入口文件的内容，即后面的会覆盖前面的；</p><p>​    jQuery多个都执行，前面的执行完才执行后面的</p><h3 id="jQuery入口函数的写法"><a href="#jQuery入口函数的写法" class="headerlink" title="jQuery入口函数的写法"></a>jQuery入口函数的写法</h3><pre><code>$(document).ready(function()&#123;    ...&#125;);jQuery(document).ready(function()&#123;    ...&#125;);$(function()&#123; ...&#125;);</code></pre><h3 id="jQuery冲突问题"><a href="#jQuery冲突问题" class="headerlink" title="jQuery冲突问题"></a>jQuery冲突问题</h3><p>​    当引入多个js文件后，发生 $ 符号重复冲突时</p><p>​    解决方法1：释放 $ 的使用权</p><p>​    注意点：释放操作必须在编写其他 jQuery 代码之前；释放之后不能再使用 $，改为使用 jQuery</p><pre><code>jQuery.noConflict();  //释放操作jQuery(function()&#123;    alert(&#39;hello world&#39;);&#125;);</code></pre><p>​    解决方法2：自定义一个访问符号</p><pre><code>var mmp = jQuery.noConflict();mmp(function()&#123;    alert(&#39;hello mmp&#39;);&#125;);</code></pre><h2 id="jQuery核心函数"><a href="#jQuery核心函数" class="headerlink" title="jQuery核心函数"></a>jQuery核心函数</h2><p>$(); 就代表调用 jQuery 的核心函数</p><pre><code class="js">// 1、接收一个函数$(function ()&#123;  //2、接收一个字符串  //2.1、接收一个字符串选择器,返回一个jQuery对象，对象中保存了找到的DOM对象  var $box1 = $(&quot;.box1&quot;);  var $box2 = $(&quot;#box2&quot;);  //2.2、接收一个字符串代码片段,返回一个jQuery对象,对象保存了DOM元素  var $p = $(&quot;&lt;p&gt;我是段落&lt;/p&gt;&quot;);  $box1.append($p);  // 3、接收一个DOM元素，返回一个jQuery对象  var span = document.getElementByTagName(&quot;span&quot;)[0];  var $span = $(span);  console.log($span);&#125;);</code></pre><p>未完成！！！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;如何使用jQuery？&quot;&gt;&lt;a href=&quot;#如何使用jQuery？&quot; class=&quot;headerlink&quot; title=&quot;如何使用jQuery？&quot;&gt;&lt;/a&gt;如何使用jQuery？&lt;/h2&gt;&lt;h3 id=&quot;下载jQuery库&quot;&gt;&lt;a href=&quot;#下载jQuery</summary>
+      
+    
+    
+    
+    <category term="jQuery" scheme="https://dongpangp.github.io/categories/jQuery/"/>
+    
+    
+    <category term="jQuery" scheme="https://dongpangp.github.io/tags/jQuery/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>dom基础_节点Node类型</title>
+    <link href="https://dongpangp.github.io/2021/06/04/dom%E5%9F%BA%E7%A1%80_%E8%8A%82%E7%82%B9Node%E7%B1%BB%E5%9E%8B/"/>
+    <id>https://dongpangp.github.io/2021/06/04/dom%E5%9F%BA%E7%A1%80_%E8%8A%82%E7%82%B9Node%E7%B1%BB%E5%9E%8B/</id>
     <published>2021-06-04T04:41:48.000Z</published>
-    <updated>2021-06-04T08:44:39.711Z</updated>
+    <updated>2021-06-05T04:10:54.595Z</updated>
     
     <content type="html"><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>文档对象模型（DOM，Document Object Model）是 HTML 和 XML 文档的编程接口。DOM表示由多层节点构成的文档，通过它可以添加、删除、修改页面各个部分。</p><p>DOM Level 1 在1998年成为 W3C 推荐标准，提供了基本文档结构和查询的接口。</p><p><span style="color: red;font-size:20px">注意</span>    IE8 及更低版本中的 DOM 是通过 COM 对象实现的。 这意味着这些版本的IE中， DOM 对象跟原生 JavaScript 对象具有不同的行为和功能。</p><h2 id="节点层级"><a href="#节点层级" class="headerlink" title="节点层级"></a>节点层级</h2><p>任何 HTML 或 XML 文档都可以用 DOM 表示为一个由<span style="color:yellow">节点</span>构成的层级结构 </p><p>节点分很多类型，每种类型对应着文档中不同的信息和（或）标记，也都有自己不同的特性、数据和方法，而且与其他类型有某种关系</p><p>例如：</p><pre><code class="html">&lt;html&gt;  &lt;head&gt;    &lt;title&gt;Sample Page&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;p&gt; hello world!&lt;/p&gt;  &lt;/body&gt;&lt;/html&gt;</code></pre><p>层级结构：</p><p><img src="https://raw.githubusercontent.com/DongPangP/myImages/main/Document.png"></p><p>document 节点是每个文档的根节点</p><p>根节点唯一的子节点是 html 元素，被称为 文档元素。 文档元素是文档最外层的元素，所有其他元素都存在于这个元素之内，每个文档只能有一个文档元素。</p><p>HTML 中每段标记都可以表示为这个树形结构中的一个节点。</p><p>元素节点表示HTML元素，属性节点表示属性，文档类型节点表示文档类型，注释节点表示注释。</p><p>DOM中总共有12种节点类型，这些类型都继承一种基本类型</p><h3 id="Node类型"><a href="#Node类型" class="headerlink" title="Node类型"></a>Node类型</h3><p>DOM Level 1 描述了名为Node的接口，这个接口是所有 DOM 节点类型必须实现的。</p><p>Node接口在JavaScript中被实现为Node类型，在除IE之外的所有浏览器中都可以直接访问这个类型。</p><p>在JavaScript中，所有节点类型都继承Node类型，因此所有类型都共享相同的基本属性和方法。</p><p>每个节点都有nodeType 属性，表示该节点的类型。节点类型由定义在Node类型上的12个数值常量表示：</p><ul><li>Node.ELEMENT_NODE(1)</li><li>Node.ATTRIBUTE_NODE(2)</li><li>Node.TEXT_NODE(3)</li><li>Node.CDATA_SECTION_NODE(4)</li><li>Node.ENTITY_REFERENCE_NODE(5)</li><li>Node.ENTITY_NODE(6)</li><li>Node.PROCESSING_INSTRUCTION_NODE(7)</li><li>Node.COMMENT_NODE(8)</li><li>Node.DOCUMENT_NODE(9)</li><li>Node.DOCUMENT_TYPE_NODE(10)</li><li>Node.DOCUMENT_FRAGMENT_NODE(11)</li><li>Node.NOTATION_NODE(12)</li></ul><p>节点类型可通过这些常量来比较确定，比如：</p><pre><code>// 比较someNode.nodeType 与 Node.ElEMENT_NODE常量if(someNode.nodeType === Node.ElEMENT_NODE)&#123;    alert(&quot;Node is an element&quot;);&#125;</code></pre><p><span style="color: red;font-size:20px">注意</span>    浏览器并不支持所有节点类型，最常用的是元素节点和文本节点</p><h4 id="nodeName-和-nodeValue"><a href="#nodeName-和-nodeValue" class="headerlink" title="nodeName 和 nodeValue"></a>nodeName 和 nodeValue</h4><p>这两个值保存了节点信息，且取决于节点信息。</p><p>首先检查节点类型</p><pre><code>// 判断节点是否为元素if(someNode.nodeType === 1)&#123;    value = someNode.nodeName;&#125;//对元素而言，nodeName始终等于元素的标签名，而nodeValue则始终为null</code></pre><h4 id="节点关系"><a href="#节点关系" class="headerlink" title="节点关系"></a>节点关系</h4><p>文档中所有节点和其他节点都有关系，相当于族谱。</p><p>每个节点都有一个childNodes属性，其中包含一个NodeList的实例</p><p><span style="color:yellow">NodeList</span> 是一个类数组对象，用于存储可以按位置存取的有序节点。注意：NodeList 并不是Array的实例，但可以使用中括号访问它的值，而且它也有length属性。NodeList对象独特的地方在于，它其实是一个对DOM结构的查询，因此DOM结构的变化会自动地在NodeLIst反映出来。 NodeList是实时的活动对象，而不是第一次访问所获得内容的快照。</p><p>使用<span style="color:yellow"> Array.prototype.slice()</span> 可以把NodeList对象转换为数组。</p><pre><code>let arrayOfNodes = Array.prototype.slice.call(someNode.childNodes,0);</code></pre><p>当然，也可以使用 ES6 的 Array.from() 静态方法</p><pre><code>let arrayOfNodes = Array.from(someNode.childNodes);</code></pre><p><img src="https://raw.githubusercontent.com/DongPangP/myImages/main/image-20210604151238225.png" alt="image-20210604151238225"></p><ol><li>每个节点都有一个parentNode属性，指向DOM树中的父元素。childNodes中的所有节点都有同一个父元素，因此它们的parentNode属性指向同一个节点。</li><li>childNodes列表中的每个节点都是同一个列表中其他节点的同胞节点。使用 previousSibling 和 nextSibling 可以在这个列表的节点中进行导航。</li><li>这个列表的第一个节点的 previousSibling 属性是null，最后一个节点的 nextSibling 属性也是 null</li><li>firstChild 和 lastChild 分别指向childNodes的第一个和最后一个，如果只有一个则指向同一个，如果没有则均为null</li><li>可以使用 hasChildNodes() ,返回true，则节点有一个或多个子节点</li><li>最后还有一个所有节点都共享的关系。ownerDocument 属性是一个指向代表整个文档的文档节点的指针。所有节点都被创建它们（或自己所在）的文档所拥有，因为一个节点不可能存在于两个或多个文档中。</li></ol><h4 id="操作节点"><a href="#操作节点" class="headerlink" title="操作节点"></a>操作节点</h4><p>因为所有关系指针都是只读的，所以DOM提供了一些操作节点的方法：</p><p>appendChild() ：</p><ul><li>​    用于在childNodes 列表<span style="color:yellow">末尾</span>添加节点。</li><li>​    添加新的节点会更新相关的关系指针，包括父节点和之前最后一个子节点。</li><li>​    返回新添加的节点。</li><li>​    如果把已经存在的节点给appenChild()，则调用一次就会出现在末尾。</li></ul><pre><code>let returnedNode = someNode.appendChild(someNode.firstChild);alert(returnedNode == someNode.lastChild);  // truealert(returnedNode == someNode.firstChild); // false</code></pre><p>insertBefore() ：把节点放到childNodes中特定位置而不是末尾</p><pre><code>// 作为最后一个子节点插入returnedNode = someNode.insertBefore(newNode,null);// 作为新的第一个子节点插入returnedNode = someNode.insertBefore(newNode,someNode.firstChild);// 插入到最后一个子节点前面returnedNode = someNode.insertBefore(newNode,someNode.lastChild);</code></pre><p>replaceChild() ：要插入的节点和要替换的节点 ，要替换的节点会被返回并从文档树中移除</p><pre><code>// 替换第一个子节点let returnedNode = someNode.replaceChild(newNode,someNode.firstChild);// 替换最后一个子节点returnedNode = someNode.replaceChild(newNode,someNode.lastChild);</code></pre><p>removeChild() ：移除节点，要删除的节点会被返回并从文档树中移除</p><pre><code>// 删除第一个子节点let formerFirstChild = someNode.removeChild(someNode.firstChild);</code></pre><h4 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h4><p>cloneNode()</p><p>该方法接收一个布尔值额。如果传入true，会进行深复制，即复制节点及整个子DOM树；如果传入false，则只会复制调用该方法的节点。</p><p>复制返回的节点属于文档所有，但尚未指定父节点，所以被称为孤儿节点（orphan）</p><pre><code class="html">&lt;ul&gt;  &lt;li&gt;item 1&lt;/li&gt;  &lt;li&gt;item 2&lt;/li&gt;  &lt;li&gt;item 3&lt;/li&gt;&lt;/ul&gt;</code></pre><pre><code class="js">let deepList = myList.cloneNode(true);alert(deepList.childNodes.length) // 3(IE9之前的版本 或 7 其他浏览器)let shallowList = myList.cloneNode(false);alert(shallowList.childNodes.length) //0</code></pre><p>这个例子中，deepList 保存myList的副本。这意味着 deepList 有3个列表项，每个列表项又各自包含文本。 变量 shallowList 则保存着 myList 的浅副本，因此没有子节点</p><p>注意： cloneNode() 方法不会复制添加到DOM节点的JavaScript属性，比如事件处理程序。这个方法只复制HTML属性，以及可选的复制子节点。除此之外则一概不会复制。IE在很长时间内会复制事件处理程序，这是个bug，所以推荐在复制前先删除事件处理程序。</p>]]></content>
     

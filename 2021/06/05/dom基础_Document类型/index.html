@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>dom基础_Document类型 | 穆飘</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="穆飘" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/highlight/atom-one-dark.min.css"><script type="text/javascript" src="/plugins/highlight/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();
+</script><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">穆飘</a></h1></div><p class="m-desc">别想太多，学就完事了！！</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">dom基础_Document类型</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2021/06/05/dom%E5%9F%BA%E7%A1%80_Document%E7%B1%BB%E5%9E%8B/">2021-06-05</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%AC%94%E8%AE%B0/">JavaScript高级程序设计笔记</a>&nbsp;&bull;&nbsp;<a href="/categories/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%AC%94%E8%AE%B0/Dom/">Dom</a></span></div></div><div class="p-content"><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ol>
+<li>Document 类型是 JavaScript 中表示文档节点的类型。</li>
+<li>在浏览器中，文档对象 document 是HTMLDocument 的实例 （HTMLDocument 继承 Document），表示整个HTML页面</li>
+<li>document 是 window 对象的属性。</li>
+</ol>
+<p>特征：</p>
+<ul>
+<li>nodeType 等于 9；</li>
+<li>nodeName 值为 ‘#document’ ；</li>
+<li>nodeValue 值为 null；</li>
+<li>parentNode 值为 null；</li>
+<li>ownerDocument 值为 null；</li>
+<li>子节点可以为DocumentType(最多一个)、Element(最多一个)、ProcessingInstruction 或 Comment 类型</li>
+</ul>
+<p>Document 类型可以表示 HTML 页面或其他 XML 文档，但最常用的还是通过HTMLDocument的实例取得 document对象。</p>
+<p>document对象可以获取关于页面的信息以及操作其外观和底层结构。</p>
+<h2 id="文档子节点"><a href="#文档子节点" class="headerlink" title="文档子节点"></a>文档子节点</h2><h3 id="documentElement"><a href="#documentElement" class="headerlink" title="documentElement"></a>documentElement</h3><p>documentElement 属性，始终指向HTML页面的 html 元素。虽然 document.childNodes 中始终有 html 元素，但使用 documentElement 属性可以更快更直接的访问该元素。</p>
+<pre><code class="html">&lt;html&gt;
+  &lt;body&gt;
+  
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>documentElement、firstChild 和 childNodes[0]</p>
+<pre><code class="js">let html = document.documentElement; //取得对&lt;html&gt;的引用
+alert(html === document.childNodes[0]);  //true
+alert(html === document.firstChild);  //true
+</code></pre>
+<h3 id="body"><a href="#body" class="headerlink" title="body"></a>body</h3><p>作为HTMLDocument 的实例，document 对象还有一个body 属性，直接指向 body 元素。</p>
+<pre><code>let body = document.body;
+</code></pre>
+<p>所有主流浏览器都支持  document.documentElement 和 document.body</p>
+<h3 id="doctype"><a href="#doctype" class="headerlink" title="doctype"></a>doctype</h3><p>Document 类型另一种可能的子节点是 DocumentType。</p>
+<pre><code>&lt;!doctype&gt;标签是文档中独立的部分，其信息可以通过 doctype 属性来访问
+let doctype = document.doctype; //取得对&lt;!doctype&gt;的引用
+</code></pre>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>html 元素外的注释也是文档的子节点，它们的类型是Comment。但是浏览器不同实现不同，这些注释不一定被识别，或者表现不一致。</p>
+<p>这个页面有3个子节点：注释、html元素、注释，但是实际上不同浏览器可能会不一样</p>
+<pre><code class="html">&lt;!-- 第一条注释 --&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- 第二条注释 --&gt;
+</code></pre>
+<p>另外，一般来说 appendChild()、removeChild()和 replaceChild() 方法不会用在 document 对象上。因为文档类型（如果存在）是只读的，而且只能有一个Element类型的子节点</p>
+<h2 id="文档信息"><a href="#文档信息" class="headerlink" title="文档信息"></a>文档信息</h2><h3 id="title"><a href="#title" class="headerlink" title="title"></a>title</h3><ol>
+<li>包含 title 元素中的文本，通常显示在浏览器窗口或标签页的标题栏。</li>
+<li>通过这个属性可以读写页面的标题，修改后的标题也会反映在浏览器标题栏上。</li>
+<li>不过，修改title属性并不会改变 title 元素</li>
+</ol>
+<pre><code>// 读取文档标题
+let originalTitle = document.title;
+
+// 修改文档标题
+document.title = &quot;New page title&quot;;
+</code></pre>
+<h3 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h3><p>URL包含当前页面完整的URL（地址栏中的URL）</p>
+<pre><code>let url = document.URL;
+</code></pre>
+<h3 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h3><p>domian 包含当前的域名</p>
+<pre><code>let domain = document.domain;
+</code></pre>
+<p>domain 可以设置，但是只能设置 URL 中包含的值。</p>
+<pre><code>// 页面来自 p2p.wrox.com
+document.domain = &quot;wrox.com&quot;; //成功
+document.domain = &quot;aaa.com&quot;; //失败
+</code></pre>
+<p>当页面中包含来自某个不同子域的窗格（frame）或内嵌窗格（iframe）时，设置document.domain是有用的。因为跨源通信存在安全隐患，所以不同子域的页面间无法通过JavaScript通信。此时只要将每个页面上的document.domain设置为相同的值，这些页面就可以访问对方的JavaScript对象了。</p>
+<p>浏览器对domain属性设置只能放松不能收紧</p>
+<h3 id="referrer"><a href="#referrer" class="headerlink" title="referrer"></a>referrer</h3><p>包含链接到当前页面的那个页面的URL，如果当前页面没有来源，则referrer属性包含空字符串</p>
+<pre><code>let refferrer = document.referrer
+</code></pre>
+<h2 id="定位元素"><a href="#定位元素" class="headerlink" title="定位元素"></a>定位元素</h2><h3 id="getElementById"><a href="#getElementById" class="headerlink" title="getElementById()"></a>getElementById()</h3><ol>
+<li>接收一个参数，即要返回元素的ID，如果找到了则返回这个元素，如果没找到则返回null。</li>
+<li>参数必须和元素在页面中的id属性值完全匹配，包括大小写。</li>
+<li>如果页面存在多个具有相同ID的元素，则方法只返回文档中出现的第一个元素</li>
+</ol>
+<pre><code>&lt;div id=&quot;myDiv&quot;&gt;hello&lt;/div&gt;
+let div = document.getElementById(&quot;myDiv&quot;) // 取得对这个&lt;div&gt;元素的引用
+</code></pre>
+<h3 id="getElementsByTagName"><a href="#getElementsByTagName" class="headerlink" title="getElementsByTagName()"></a>getElementsByTagName()</h3><ol>
+<li>接收一个参数，要获取元素的标签名，返回包含零个或多个元素的 NodeList</li>
+<li>在HTML文档中，这个方法返回一个HTMLCollection对象。考虑到两者都是“实时”列表，HTMLCollection 与 NodeLIst 是很相似的。</li>
+<li>可以通过传入 * 获取文档的所有元素</li>
+</ol>
+<pre><code>let images = document.getElementsByTagName(&quot;img&quot;);
+</code></pre>
+<p>这里把返回的 HTMLCollection 对象保存在了变量 images 中，与NodeList一样，也可以使用 中括号 或 item() 方法从HTMLCollection 取得特定的元素。</p>
+<pre><code>alert(images.length);
+alert(images[0].src);
+alert(images.item(0).src);
+</code></pre>
+<p>HTMLCollection 对象还有一个额外的方法 namedItem()，可通过标签的 name 属性取得某一项的引用。</p>
+<pre><code>&lt;img src=&quot;my.jpg&quot; name=&quot;myImage&quot;&gt;
+</code></pre>
+<pre><code>let images = document.getElementsByTagName(&quot;img&quot;);
+let myImage1 = images.namedItem(&quot;myImage&quot;);
+let myImage2 = images[&quot;myImage&quot;];
+</code></pre>
+<h3 id="getElementByName"><a href="#getElementByName" class="headerlink" title="getElementByName()"></a>getElementByName()</h3><p>这个方法会返回具有给定 name 属性的所有元素，最常用于单选按钮</p>
+<h2 id="特殊集合"><a href="#特殊集合" class="headerlink" title="特殊集合"></a>特殊集合</h2><ul>
+<li>document.anchors：包含文档中所有带name属性的 a 元素</li>
+<li>document.forms：包含文档中所有 from 元素</li>
+<li>document.images：包含文档中中所有 img 元素</li>
+<li>document.links：包含文档中所有带href属性的 a 元素</li>
+</ul>
+<h2 id="文档写入"><a href="#文档写入" class="headerlink" title="文档写入"></a>文档写入</h2><ul>
+<li>write()</li>
+<li>writeIn()</li>
+<li>open()</li>
+<li>close()</li>
+</ul>
+<p>该内容可参考以下文章：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37589327/article/details/78992784">https://blog.csdn.net/m0_37589327/article/details/78992784</a></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">dpp</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2021/06/05/dom%E5%9F%BA%E7%A1%80_Document%E7%B1%BB%E5%9E%8B/">https://DongPangP.github.io/2021/06/05/dom基础_Document类型/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://DongPangP.github.io">dpp的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tags"></i><a href="/tags/JavaScript/">JavaScript</a><a href="/tags/Dom/">Dom</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E5%AD%90%E8%8A%82%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">文档子节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#documentElement"><span class="toc-number">2.1.</span> <span class="toc-text">documentElement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#body"><span class="toc-number">2.2.</span> <span class="toc-text">body</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#doctype"><span class="toc-number">2.3.</span> <span class="toc-text">doctype</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">2.4.</span> <span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E4%BF%A1%E6%81%AF"><span class="toc-number">3.</span> <span class="toc-text">文档信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#title"><span class="toc-number">3.1.</span> <span class="toc-text">title</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#URL"><span class="toc-number">3.2.</span> <span class="toc-text">URL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#domain"><span class="toc-number">3.3.</span> <span class="toc-text">domain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#referrer"><span class="toc-number">3.4.</span> <span class="toc-text">referrer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E5%85%83%E7%B4%A0"><span class="toc-number">4.</span> <span class="toc-text">定位元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementById"><span class="toc-number">4.1.</span> <span class="toc-text">getElementById()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementsByTagName"><span class="toc-number">4.2.</span> <span class="toc-text">getElementsByTagName()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementByName"><span class="toc-number">4.3.</span> <span class="toc-text">getElementByName()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E9%9B%86%E5%90%88"><span class="toc-number">5.</span> <span class="toc-text">特殊集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E5%86%99%E5%85%A5"><span class="toc-number">6.</span> <span class="toc-text">文档写入</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2021/06/05/%E4%BC%AA%E6%95%B0%E7%BB%84/">伪数组 &gt;</a></div></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">穆飘</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>
